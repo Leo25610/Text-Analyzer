@@ -41,10 +41,36 @@ class TextAnlayzer:
         text=self._read_file()
         words=text.split()
         counter=Counter(words)
-        if counter >1:
-            frequent_words = counter.most_common()
-            for word in frequent_words:
-                print(f'Часто встречаемые слова: {word}')
+        if counter :
+            max_count = counter.most_common(1)[0][1]
+            frequent_words = [word for word,count in counter.items() if count==max_count]
+            print(f'Часто встречаемые слова: {','.join(frequent_words)}')
+
+    def unique_word(self):
+        text=self._read_file()
+        words=text.split()
+        counter=Counter(words)
+        unique_words=[word for word,count in counter.items() if count == 1]
+        print(f'Слово встречающаеся один раз: {','.join(unique_words)}')
+
+
+class NumbersAnalyzer:
+    def __init__(self,file_name):
+        self.file_name = file_name
+        self.content = self._read_file()
+
+    def _read_file(self):
+        try:
+            with open(self.file_name,'r',encoding='utf8') as file:
+                return file.read()
+
+
+        except FileNotFoundError:
+            print(f"Файл '{self.file_name}' не найден!")
+            return ""
+
+    def max_min_numbers(self):
+        text=self._read_file()
 
 
 
@@ -56,3 +82,4 @@ analyzer.search_by_length()
 analyzer.string_and_word_counter()
 analyzer.symbols_counter()
 analyzer.frequent_words_counter()
+analyzer.unique_word()
