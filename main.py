@@ -2,7 +2,7 @@ from collections import Counter
 import re
 
 
-class TextAnlayzer:
+class TextAnalyzer:
     def __init__(self,file_name):
         self.file_name=file_name
         self.content=self._read_file()
@@ -51,7 +51,7 @@ class TextAnlayzer:
         words=text.split()
         counter=Counter(words)
         unique_words=[word for word,count in counter.items() if count == 1]
-        print(f'Слово встречающаеся один раз: {','.join(unique_words)}')
+        print(f'Слово встречающаеся один раз: {', '.join(unique_words)}')
 
 
 class NumbersAnalyzer:
@@ -63,23 +63,52 @@ class NumbersAnalyzer:
         try:
             with open(self.file_name,'r',encoding='utf8') as file:
                 return file.read()
-
-
         except FileNotFoundError:
             print(f"Файл '{self.file_name}' не найден!")
             return ""
 
+
+    def is_number_file(self):
+        return all(word.isdigit() for word in self.content.split())
+
+
     def max_min_numbers(self):
         text=self._read_file()
+        numbers=text.split()
+        counter=Counter(numbers)
+        _max=max(map(int,counter.keys()))
+        _min=min(map(int,counter.keys()))
+        print(f'Максимальное число: {_max}')
+        print(f'Минимальное число: {_min}')
+
+
+    def sum_numbers_counter(self):
+        text=self._read_file()
+        numbers=text.split()
+        counter=Counter(numbers)
+        num_sum = sum(int(word) * count for word,count in counter.items() if word.isdigit())
+        print(f'Сумма чисел в файле: {num_sum}')
+
+    def  custom_number_search(self):
+        text=self._read_file()
+        numbers=text.split()
+        counter=Counter(numbers)
+
 
 
 
 
 file_name=input("Введите имя файла(.txt): ")
-analyzer=TextAnlayzer(file_name)
-print(analyzer.content)
-analyzer.search_by_length()
-analyzer.string_and_word_counter()
-analyzer.symbols_counter()
-analyzer.frequent_words_counter()
-analyzer.unique_word()
+content = open(file_name, 'r', encoding='utf8').read()
+
+if all(word.isdigit() for word in content.split()):
+    analyzer = NumbersAnalyzer(file_name)
+    analyzer.max_min_numbers()
+    analyzer.sum_numbers_counter()
+else:
+    analyzer = TextAnalyzer(file_name)
+    analyzer.search_by_length()
+    analyzer.string_and_word_counter()
+    analyzer.symbols_counter()
+    analyzer.frequent_words_counter()
+    analyzer.unique_word()
