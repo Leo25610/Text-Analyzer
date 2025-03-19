@@ -109,7 +109,6 @@ class NumbersAnalyzer:
 
 
 
-
 file_name=input("Введите имя файла(.txt): ")
 content = open(file_name, 'r', encoding='utf8').read()
 
