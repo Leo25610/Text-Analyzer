@@ -86,14 +86,26 @@ class NumbersAnalyzer:
         text=self._read_file()
         numbers=text.split()
         counter=Counter(numbers)
-        num_sum = sum(int(word) * count for word,count in counter.items() if word.isdigit())
+        num_sum = sum(int(num) * count for num,count in counter.items() if num.isdigit())
         print(f'Сумма чисел в файле: {num_sum}')
 
-    def  custom_number_search(self):
-        text=self._read_file()
-        numbers=text.split()
-        counter=Counter(numbers)
+    def custom_number_search(self, position):
+        text = self._read_file()
+        numbers = list(map(int, text.split()))
+        unique_numbers = sorted(set(numbers), reverse=True)
 
+        if 0 < position <= len(unique_numbers):
+            print(f"{position}-е по величине число: {unique_numbers[position - 1]}")
+        else:
+            print("Ошибка: заданный параметр выходит за границы доступных чисел.")
+    def average_num(self):
+        text=self._read_file()
+        numbers=[int(num) for num in text.split() if num.isdigit()]
+        if numbers:
+            average_num=sum(numbers)/len(numbers)
+            print(f'Средне арифмитическое: {average_num}')
+        else:
+            print("В файле нет чисел!")
 
 
 
@@ -105,6 +117,10 @@ if all(word.isdigit() for word in content.split()):
     analyzer = NumbersAnalyzer(file_name)
     analyzer.max_min_numbers()
     analyzer.sum_numbers_counter()
+    position = int(input("Введите порядковый номер величины который вы хотите найти(2-ое по величине число): "))
+    analyzer.custom_number_search(position)
+    analyzer.average_num()
+
 else:
     analyzer = TextAnalyzer(file_name)
     analyzer.search_by_length()
